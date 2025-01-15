@@ -71,21 +71,21 @@ public class CarService {
     OpenTelemetry openTelemetry;
 
     @Inject
-    Meter meter;
-
-    @Inject
     Tracer tracer;
 
     @Inject
     Span carNotFoundSpan;
     
-    LongCounter carNotFoundCounter;
+    @Inject
+    Meter meter;
+
     LongCounter carCreatedCounter;
+
     @PostConstruct
     public void init(){
-        carNotFoundCounter = meter.counterBuilder("cars.not.found").build();
         carCreatedCounter = meter.counterBuilder("car.created").build();
     }
+
     public String get(Long personId) {
         personClient.init(PERSON_HOST, PERSON_PORT, personId);
         String person = personClient.getPerson();
@@ -101,7 +101,6 @@ public class CarService {
     public Car getCar(@PathParam("carId") @NotEmpty Long id) {
         Car foundCar = carRepo.get(id);
         if (foundCar == null)
-            carNotFoundCounter.add(1);
             carNotFoundSpan = tracer.spanBuilder("GettingPropertiesForHost").startSpan();
             try(Scope scope = carNotFoundSpan.makeCurrent()){
                 carNotFound(id);
