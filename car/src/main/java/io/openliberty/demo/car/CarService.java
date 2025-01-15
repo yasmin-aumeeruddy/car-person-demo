@@ -101,6 +101,7 @@ public class CarService {
     public Car getCar(@PathParam("carId") @NotEmpty Long id) {
         Car foundCar = carRepo.get(id);
         if (foundCar == null)
+            carNotFoundCounter.add(1);
             carNotFoundSpan = tracer.spanBuilder("GettingPropertiesForHost").startSpan();
             try(Scope scope = carNotFoundSpan.makeCurrent()){
                 carNotFound(id);
