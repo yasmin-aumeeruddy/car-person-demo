@@ -68,14 +68,14 @@ public class CarService {
     String PERSON_HOST;
 
     @Inject
-    OpenTelemetry openTelemetry;
-
-    @Inject
     Tracer tracer;
 
     @Inject
     Span carNotFoundSpan;
-    
+
+    @Inject
+    Span findingCarSpan;
+
     @Inject
     Meter meter;
 
@@ -93,22 +93,32 @@ public class CarService {
     }
     @GET
     public Collection<Car> getAllCars() {
+        System.out.println(System.getProperties());
         return carRepo.values();
     }
 
     @GET
     @Path("/getCar/{carId}")
-    public Car getCar(@PathParam("carId") @NotEmpty Long id) {
-        Car foundCar = carRepo.get(id);
-        if (foundCar == null)
-            carNotFoundSpan = tracer.spanBuilder("GettingPropertiesForHost").startSpan();
-            try(Scope scope = carNotFoundSpan.makeCurrent()){
-                carNotFound(id);
+    public String getCar(@PathParam("carId") @NotEmpty Long id) throws InterruptedException {
+        Car foundCar = null;
+        findingCarSpan = tracer.spanBuilder("findingCar").startSpan();
+        try(Scope scope = findingCarSpan.makeCurrent()){
+            foundCar = carRepo.get(id);
+            if (foundCar == null){
+                carNotFoundSpan = tracer.spanBuilder("carNotFound").startSpan();
+                try(Scope subScope = carNotFoundSpan.makeCurrent()){
+                    Thread.sleep(3000);
+                    return "Car with id " + id + " not found.";
+                }
+                finally{
+                    carNotFoundSpan.end();
+                }
             }
-            finally{
-                carNotFoundSpan.end();
-            }    
-        return foundCar;
+        }
+        finally{
+            findingCarSpan.end();
+        }
+        return foundCar.toString();
     }
 
     @GET
@@ -120,10 +130,6 @@ public class CarService {
         //Get personId
         String person = get(personId);
         return "Car created with id " + c.id + " owned by " + person;
-    }
-
-    private void carNotFound(Long id) {
-        throw new NotFoundException("Car with id " + id + " not found.");
     }
 
 }

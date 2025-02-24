@@ -28,7 +28,7 @@ cd person \
 mvn liberty:run
 ```
 
-To create a new person with the name Bob and age 21, naigate to:
+To create a new person with the name Bob and age 21, navigate to:
 
 http://localhost:9080/people/createPerson?name=bob&age=21
 
