@@ -49,9 +49,6 @@
                 <groupId>io.openliberty.tools</groupId>
                 <artifactId>liberty-maven-plugin</artifactId>
                 <version>3.7.1</version>
-                <configuration>
-                    <installDirectory>/Users/yasmin/Documents/open-liberty/dev/build.image/wlp/</installDirectory>
-                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -20,6 +20,7 @@ package io.openliberty.demo.person;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
@@ -29,10 +30,10 @@ import jakarta.validation.constraints.Size;
 
 public class Person {
 
-    private static final Random r = new Random();
+    private UUID uuid = UUID.randomUUID();
 
     @NotNull
-    public final Long id;
+    public final UUID id;
 
     @NotNull
     @Size(min = 2, max = 50)
@@ -50,10 +51,10 @@ public class Person {
     @JsonbCreator
     public Person(@JsonbProperty("name") String name,
             @JsonbProperty("age") int age,
-            @JsonbProperty("id") Long id) {
+            @JsonbProperty("id") UUID id) {
         this.name = name;
         this.age = age;
-        this.id = id == null ? r.nextLong() : id;
+        this.id = id == null ? uuid : id;
     }
 
     @Override
