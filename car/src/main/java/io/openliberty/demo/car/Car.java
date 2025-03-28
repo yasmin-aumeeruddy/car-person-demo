@@ -20,6 +20,7 @@ package io.openliberty.demo.car;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.UUID;
 
 import jakarta.json.bind.annotation.JsonbCreator;
 import jakarta.json.bind.annotation.JsonbProperty;
@@ -38,16 +39,16 @@ public class Car {
     @Size(min = 2, max = 50)
     public final String make;
 
-    public final Long personId;
+    public final UUID personId;
 
-    public Car(String make, Long personId) {
+    public Car(String make, UUID personId) {
         this(make, null, personId);
     }
 
     @JsonbCreator
     public Car(@JsonbProperty("make") String make,
             @JsonbProperty("id") Long id, 
-            @JsonbProperty("personId") Long personId) {
+            @JsonbProperty("personId") UUID personId) {
         this.make = make;
         this.id = id == null ? r.nextLong() : id;
         this.personId = personId;

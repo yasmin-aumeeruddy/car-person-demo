@@ -22,6 +22,7 @@ package io.openliberty.demo.person;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
@@ -45,7 +46,7 @@ import jakarta.ws.rs.core.MediaType;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PersonService {
 
-    private final Map<Long, Person> personRepo = new HashMap<>();
+    private final Map<UUID, Person> personRepo = new HashMap<>();
 
     @GET
     @Path("/")
@@ -55,7 +56,7 @@ public class PersonService {
 
     @GET
     @Path("/getPerson/{personId}")
-    public Person getPerson(@PathParam("personId") @NotEmpty Long id) {
+    public Person getPerson(@PathParam("personId") @NotEmpty UUID id) {
         Person foundPerson = personRepo.get(id);
         if (foundPerson == null)
             personNotFound(id);
@@ -64,14 +65,15 @@ public class PersonService {
 
     @GET
     @Path("/createPerson")
-    public String createPerson(@QueryParam("name") @NotEmpty @Size(min=2, max=50) String name,
+    @Produces(MediaType.APPLICATION_JSON)
+    public Person createPerson(@QueryParam("name") @NotEmpty @Size(min=2, max=50) String name,
                              @QueryParam("age") @NotEmpty @PositiveOrZero int age) {
         Person p = new Person(name, age);
         personRepo.put(p.id, p);
-        return "Person created with id " + p.id;
+        return p;
     }
 
-    private void personNotFound(Long id) {
+    private void personNotFound(UUID id) {
         throw new NotFoundException("Person with id " + id + " not found.");
     }
 
