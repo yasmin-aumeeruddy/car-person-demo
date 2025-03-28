@@ -56,7 +56,7 @@ public class PersonService {
 
     @GET
     @Path("/getPerson/{personId}")
-    public Person getPerson(@PathParam("personId") @NotEmpty Long id) {
+    public Person getPerson(@PathParam("personId") @NotEmpty UUID id) {
         Person foundPerson = personRepo.get(id);
         if (foundPerson == null)
             personNotFound(id);
@@ -73,7 +73,7 @@ public class PersonService {
         return p;
     }
 
-    private void personNotFound(Long id) {
+    private void personNotFound(UUID id) {
         throw new NotFoundException("Person with id " + id + " not found.");
     }
 

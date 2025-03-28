@@ -20,6 +20,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import java.net.URI;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,12 +34,12 @@ public class PersonClient {
     private Builder clientBuilder;
 
     private static final Logger julLogger = Logger.getLogger("jul-logger");
-    public void init(String hostname, int port, Long personId) {
+    public void init(String hostname, int port, UUID personId) {
         this.initHelper(hostname, port, personId);
     }
 
     // Helper method to set the attributes.
-    private void initHelper(String hostname, int port, Long personId) {
+    private void initHelper(String hostname, int port, UUID personId) {
         this.url = buildUrl(PROTOCOL, hostname, port, PEOPLE + personId);
         julLogger.log(Level.INFO, "Building client for url " + url);
         this.clientBuilder = buildClientBuilder(this.url);

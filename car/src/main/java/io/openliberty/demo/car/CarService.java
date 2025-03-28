@@ -22,6 +22,7 @@ package io.openliberty.demo.car;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.annotation.PostConstruct;
@@ -86,7 +87,7 @@ public class CarService {
         carCreatedCounter = meter.counterBuilder("car.created").build();
     }
 
-    public String get(Long personId) {
+    public String get(UUID personId) {
         personClient.init(PERSON_HOST, PERSON_PORT, personId);
         String person = personClient.getPerson();
         return person;
@@ -123,13 +124,12 @@ public class CarService {
 
     @GET
     @Path("/createCar")
-    public String createCar(@QueryParam("make") @NotEmpty @Size(min=2, max=50) String make, @QueryParam("personId") Long personId) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Car createCar(@QueryParam("make") @NotEmpty @Size(min=2, max=50) String make, @QueryParam("personId") UUID personId) {
         carCreatedCounter.add(1);
         Car c = new Car(make, personId);
         carRepo.put(c.id, c);
-        //Get personId
-        String person = get(personId);
-        return "Car created with id " + c.id + " owned by " + person;
+        return c;
     }
 
 }
