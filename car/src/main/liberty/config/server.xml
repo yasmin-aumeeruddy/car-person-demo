@@ -3,19 +3,19 @@
     <featureManager>
         <platform>jakartaee-10.0</platform>
         <platform>microprofile-7.0</platform>
-        <feature>jsonb</feature>
-        <feature>jsonp</feature>
         <feature>mpTelemetry</feature>
         <feature>mpRestClient</feature>
+        <feature>jsonb</feature>
+        <feature>jsonp</feature>
     </featureManager>
-
-    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
-                  id="defaultHttpEndpoint" host="*" />
 
     <webApplication location="demo-microprofile-telemetry-car.war" contextRoot="/">
         <!-- enable visibility to third party apis -->
         <classloader apiTypeVisibility="+third-party"/>
     </webApplication>
+
+    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+                  id="defaultHttpEndpoint" host="*" />
 
     <mpTelemetry source="message"/>
 

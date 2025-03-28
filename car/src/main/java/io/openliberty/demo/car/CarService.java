@@ -94,7 +94,6 @@ public class CarService {
     }
     @GET
     public Collection<Car> getAllCars() {
-        System.out.println(System.getProperties());
         return carRepo.values();
     }
 
@@ -124,12 +123,14 @@ public class CarService {
 
     @GET
     @Path("/createCar")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Car createCar(@QueryParam("make") @NotEmpty @Size(min=2, max=50) String make, @QueryParam("personId") UUID personId) {
+    @Produces( MediaType.TEXT_PLAIN )
+    public String createCar(@QueryParam("make") @NotEmpty @Size(min=2, max=50) String make, @QueryParam("personId") UUID personId) {
         carCreatedCounter.add(1);
         Car c = new Car(make, personId);
         carRepo.put(c.id, c);
-        return c;
+        //Get personId
+        String person = get(personId);
+        return "Car created with id " + c.id + " owned by " + person;
     }
 
 }

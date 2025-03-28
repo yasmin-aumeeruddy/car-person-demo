@@ -9,12 +9,13 @@
         <feature>mpRestClient</feature>
     </featureManager>
 
-    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
-                  id="defaultHttpEndpoint" host="*" />
 
-    <mpTelemetry source="message"/>
-    
     <webApplication location="demo-microprofile-telemetry-person.war" contextRoot="/">
         <classloader apiTypeVisibility="+third-party"/>
     </webApplication>
+
+        <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}"
+                  id="defaultHttpEndpoint" host="*" />
+
+    <mpTelemetry source="message"/>
 </server>
