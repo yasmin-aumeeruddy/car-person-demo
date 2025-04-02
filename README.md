@@ -7,14 +7,14 @@ Before running this demo, it is recommended to set up a a backend system to coll
 See the [docker-otel-lgtm](https://github.com/grafana/docker-otel-lgtm) repository and clone the repo:
 
 ```
-git clone https://github.com/grafana/docker-otel-lgtm.git \
+git clone https://github.com/grafana/docker-otel-lgtm.git 
 cd docker-otel-lgtm/docker
 ```
 
 Build and run the image containing all services required for gathering traces, metrics and logs:
 
 ```
-podman build . -t grafana/otel-lgtm \
+podman build . -t grafana/otel-lgtm 
 podman run -p 3000:3000 -p 4317:4317 -p 4318:4318 --rm -ti localhost/grafana/otel-lgtm
 ```
 ## Person Service:
@@ -24,7 +24,7 @@ This service allows users to create records of people, given their name and age.
 Start the `Person` service: 
 
 ```
-cd person \
+cd person 
 mvn liberty:run
 ```
 
@@ -51,7 +51,7 @@ This service allows users to create records of cars, given the make of the car a
 Start the `Car` service:
 
 ```
-cd car \
+cd car 
 mvn liberty:run
 ```
 
